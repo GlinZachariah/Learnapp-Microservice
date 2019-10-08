@@ -43,4 +43,12 @@ public class MentorService {
     public void makePayment(String courseId) {
         restTemplate.getForObject(mentorServiceUrl()+"makePayment/"+courseId,Integer.class);
     }
+
+    public String getUsername(int mentorDetails) {
+        return restTemplate.getForObject(mentorServiceUrl()+"getMentorUsername/"+mentorDetails,String.class);
+    }
+
+    public int getMentorId(String trainerName) {
+        return restTemplate.getForObject(mentorServiceUrl()+"getMentorId/"+trainerName,Integer.class);
+    }
 }

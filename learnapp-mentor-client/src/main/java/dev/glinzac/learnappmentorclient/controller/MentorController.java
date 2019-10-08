@@ -125,29 +125,29 @@ public class MentorController {
 
 //    getCourseDetails
     @RequestMapping(value = "/getCourseDetails/{courseId}",method = RequestMethod.GET)
-    public  CourseModel getCourseDetails(@PathVariable(value = "courseid")  String courseid){
+    public  CourseModel getCourseDetails(@PathVariable(value = "courseId")  String courseid){
         return mentorService.getCourseDetails(courseid);
     }
 
     //    addToCompleted Count
     @RequestMapping(value = "/addCourseCompletedCount/{courseId}",method = RequestMethod.GET)
-    public  void addCourseCompleted(@PathVariable(value = "courseid")  String courseid){
+    public  void addCourseCompleted(@PathVariable(value = "courseId")  String courseid){
         mentorService.addToCompleted(courseid);
     }
 
     //    addToTotalTraineeCount
     @RequestMapping(value = "/increaseTraineeCount/{courseId}",method = RequestMethod.GET)
-    public  void increaseTraineeCount(@PathVariable(value = "courseid")  String courseid){
+    public  void increaseTraineeCount(@PathVariable(value = "courseId")  String courseid){
         mentorService.increaseTraineeCount(courseid);
     }
 
     @RequestMapping(value = "/increaseTraineeProgressCount/{courseId}",method = RequestMethod.GET)
-    public  void increaseTraineeProgressCount(@PathVariable(value = "courseid")  String courseid){
+    public  void increaseTraineeProgressCount(@PathVariable(value = "courseId")  String courseid){
         mentorService.increaseTraineeProgressCount(courseid);
     }
 
     @RequestMapping(value = "/makePayment/{courseId}",method = RequestMethod.GET)
-    public  void makePayment(@PathVariable(value = "courseid")  String courseid){
+    public  void makePayment(@PathVariable(value = "courseId")  String courseid){
         mentorService.makePayment(courseid);
     }
 
@@ -174,4 +174,17 @@ public class MentorController {
     public List<PaymentModel> getMentorCourses(@PathVariable(name = "mentorUsername") String mentorUsername){
         return mentorService.getMentorCourse(mentorUsername);
     }
+
+//    getMentorUsername
+    @RequestMapping(value = "/getMentorUsername/{mentorId}",method = RequestMethod.GET)
+    public String getMentorUsername(@PathVariable(name = "mentorId") String mentorId){
+        return mentorService.getMentorUsername(Integer.parseInt(mentorId));
+    }
+
+//    getMentorId
+    @RequestMapping(value = "/getMentorId/{mentorUsername}",method = RequestMethod.GET)
+    public int getMentorId(@PathVariable(name = "mentorUsername") String mentorUsername){
+        return mentorService.getMentorId(mentorUsername);
+    }
+
 }

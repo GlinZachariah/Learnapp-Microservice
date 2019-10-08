@@ -14,7 +14,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    //	performAuthentication
+    //	*performAuthentication
     @RequestMapping(value="/performAuth",method= RequestMethod.POST)
     public AuthModel performAuth(@RequestBody CredentialModel credentialModel) {
         return userService.performAuth(credentialModel);
@@ -27,7 +27,7 @@ public class UserController {
         return userService.getRole(username);
     }
 
-    //	saveCardDetails | UpdateCardDetails
+    //	* saveCardDetails | UpdateCardDetails
     @RequestMapping(value="/updateCardDetails",method= RequestMethod.PUT)
     public void updateCardDetails(@RequestBody CardDetailsModel cardDetails) {
         userService.updateCard(cardDetails);
@@ -45,37 +45,37 @@ public class UserController {
         return userService.getTrainingCompleted(username);
     }
 
-    //*	addToCompleted
+    //addToCompleted
     @RequestMapping(value = "/addCompletedTrainingDetails",method = RequestMethod.POST)
     public void addToCompleted(@RequestBody UserCompletedTrainingModel userData) {
         userService.addToCompleted(userData);
     }
 
-    //*	getProgressTrainingDetails
+    //getProgressTrainingDetails
     @RequestMapping(value="/getProgressTraining/{username}",method = RequestMethod.GET)
     public List<UserProgressTrainingModel> getProgressTraining(@PathVariable String username) {
         return userService.getCurrentTraining(username);
     }
 
-    //*	addProgressTrainingDetails | updateProgressTrainingDetails
+    //addProgressTrainingDetails | updateProgressTrainingDetails
     @RequestMapping(value="/updateProgressTraining",method = RequestMethod.PUT)
     public void updateProgressTrainingDetails(@RequestBody UserProgressTrainingModel data) {
         userService.updateProgressTraining(data);
     }
 
-    //*	signUpUser
+    //	* signUpUser
     @RequestMapping(value="/signUpUser",method = RequestMethod.POST)
     public void signUpUser(@RequestBody UserModel user) {
         userService.addUser(user);
     }
 
-//    getUsers
+// *   getUsers
     @RequestMapping(value = "/getUsers",method = RequestMethod.GET)
     public List<UserModel> getUsers(){
         return  userService.getUsers();
     }
 
-//    updateUser
+//*    updateUser
     @RequestMapping(value = "/updateUser/{username}",method = RequestMethod.GET)
     public void updateUser(@PathVariable(value = "username") String username){
         userService.updateUserPermission(username);

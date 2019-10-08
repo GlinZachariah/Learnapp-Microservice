@@ -178,7 +178,7 @@ public class UserService {
             SimpleDateFormat smf = new SimpleDateFormat("yyyy-MM-dd");
             Date date = Date.valueOf(smf.format(caldr.getTime()));
             payment.setDate(date);
-            payment.setMentorDetails(courseModel.getTrainerName());
+            payment.setMentorDetails(mentorService.getMentorId(courseModel.getTrainerName()));
             payment.setPaymentAmount(courseModel.getCharges());
             payment.setUserDetails(userDetailsRepository.findById(data.getUserName()).get());
             paymentLogRepository.save(payment);
@@ -253,7 +253,7 @@ public class UserService {
                 .map(payment->new PaymentModel(
                         payment.getDate(),
                         payment.getUserDetails().getUserName(),
-                        payment.getMentorDetails(),
+                        mentorService.getUsername(payment.getMentorDetails()),
                         payment.getCourseDetails(),
                         payment.getPaymentAmount(),
                         payment.getCommission()
@@ -273,37 +273,38 @@ public class UserService {
     }
 
     public List<MentorProgressModel> getMentorCourseDetails(int mentorId) {
-        List<UserProgress> courses = userProgressRepository.findTrainerCourses(mentorId);
-        List<MentorProgressModel> result = new ArrayList<MentorProgressModel>();
-        courses.forEach(course->{
-            MentorProgressModel item = new MentorProgressModel();
-            item.setCourseId(course.getCourseDetails());
-            item.setCourseStatus(course.getCourseStatus());
-            item.setTimestamp(course.getStartDate());
-            item.setProgress(course.getProgress());
-            item.setTimeSlot(course.getTimeslot());
-            item.setUsername(course.getUserDetails().getUserName());
-            item.setWithdrawCount(course.getWithdrawCount());
-            item.setTotalCount(course.getTotalCount());
-            item.setPaymentStatus(course.getPaymentStatus());
-            if(item.getCourseStatus().equals("Rejected")) {
-                System.out.println("Rejected Item");
-            }else {
-                result.add(item);
-            }
-        });
-        List<UserCompleted> completedCourses = userCompletedRepository.findTrainerCourses(mentorId);
-        completedCourses.forEach(course->{
-            MentorProgressModel item = new MentorProgressModel();
-            item.setCourseId(course.getCourseDetails());
-            item.setCourseStatus("Completed");
-            item.setTimestamp(course.getStartDate());
-            item.setProgress(100);
-            item.setTimeSlot(course.getTimeslot());
-            item.setUsername(course.getUserDetails().getUserName());
-            item.setWithdrawCount(course.getWithdrawCount());
-            result.add(item);
-        });
-        return result;
+//        List<UserProgress> courses = userProgressRepository.findTrainerCourses(mentorId);
+//        List<MentorProgressModel> result = new ArrayList<MentorProgressModel>();
+//        courses.forEach(course->{
+//            MentorProgressModel item = new MentorProgressModel();
+//            item.setCourseId(course.getCourseDetails());
+//            item.setCourseStatus(course.getCourseStatus());
+//            item.setTimestamp(course.getStartDate());
+//            item.setProgress(course.getProgress());
+//            item.setTimeSlot(course.getTimeslot());
+//            item.setUsername(course.getUserDetails().getUserName());
+//            item.setWithdrawCount(course.getWithdrawCount());
+//            item.setTotalCount(course.getTotalCount());
+//            item.setPaymentStatus(course.getPaymentStatus());
+//            if(item.getCourseStatus().equals("Rejected")) {
+//                System.out.println("Rejected Item");
+//            }else {
+//                result.add(item);
+//            }
+//        });
+//        List<UserCompleted> completedCourses = userCompletedRepository.findTrainerCourses(mentorId);
+//        completedCourses.forEach(course->{
+//            MentorProgressModel item = new MentorProgressModel();
+//            item.setCourseId(course.getCourseDetails());
+//            item.setCourseStatus("Completed");
+//            item.setTimestamp(course.getStartDate());
+//            item.setProgress(100);
+//            item.setTimeSlot(course.getTimeslot());
+//            item.setUsername(course.getUserDetails().getUserName());
+//            item.setWithdrawCount(course.getWithdrawCount());
+//            result.add(item);
+//        });
+//        return result;
+        return  null;
     }
 }

@@ -239,8 +239,8 @@ public class MentorService {
 //            user.setTotalCount(totalCount-1);
             userService.updateMentorProgressAmount(mentorCourse);
         }
-        mentorCourse.setTotalCount(totalCount+1);
-        mentorCourse.setWithdrawCount(withdrawCount-1);
+        mentorCourse.setTotalCount(totalCount+change);
+        mentorCourse.setWithdrawCount(withdrawCount-change);
 //        progressRepo.save(user);
         return mentorCourse;
     }
@@ -364,5 +364,13 @@ public class MentorService {
                 .stream()
                 .filter(user->user.getTrainerName().equals(mentorUsername))
                 .collect(Collectors.toList());
+    }
+
+    public String getMentorUsername(int mentorId) {
+        return mentorDetailsRepository.findById(mentorId).get().getUserDetails();
+    }
+
+    public int getMentorId(String mentorUsername) {
+        return mentorDetailsRepository.findMentorId(mentorUsername).get();
     }
 }

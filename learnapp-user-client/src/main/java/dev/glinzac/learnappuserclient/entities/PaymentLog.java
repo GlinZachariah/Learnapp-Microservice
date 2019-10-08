@@ -21,7 +21,7 @@ public class PaymentLog {
 
 //    @OneToOne
     @JoinColumn(name="mentor_id")
-    private String mentorDetails;
+    private int mentorDetails;
 
     @Column(name="payment_amount")
     private Double paymentAmount;
@@ -33,7 +33,7 @@ public class PaymentLog {
 
     }
 
-    public PaymentLog(Date date, UserDetails userDetails, String courseDetails, String mentorDetails,
+    public PaymentLog(Date date, UserDetails userDetails, String courseDetails, int mentorDetails,
                       Double paymentAmount, Double commission) {
         super();
         this.date = date;
@@ -68,11 +68,11 @@ public class PaymentLog {
         this.courseDetails = courseDetails;
     }
 
-    public String getMentorDetails() {
+    public int getMentorDetails() {
         return mentorDetails;
     }
 
-    public void setMentorDetails(String mentorDetails) {
+    public void setMentorDetails(int mentorDetails) {
         this.mentorDetails = mentorDetails;
     }
 
