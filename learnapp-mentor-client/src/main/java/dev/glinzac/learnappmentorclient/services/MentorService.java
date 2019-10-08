@@ -217,16 +217,8 @@ public class MentorService {
         return result;
     }
 
-//    public List<MentorProgressModel> viewProgress(int mentorId) {
-//        return userService.getMentorProgress(mentorId);
-//    }
-//
-//    public void updateProgress(MentorProgressModel mentorCourse) {
-//       userService.updateProgress(mentorCourse);
-//    }
 
     public MentorProgressModel withdrawProgressAmount(MentorProgressModel mentorCourse) {
-//        UserProgress user = progressRepo.findCourse(mentorCourse.getUsername(), mentorCourse.getCourseId()).get();
         int totalCount =userService.getTotalCount(mentorCourse);
         int withdrawCount = userService.getWithdrawCount(mentorCourse);
         int change=0;
@@ -234,14 +226,11 @@ public class MentorService {
             CourseDetails course  = courseDetailsRepository.findById(mentorCourse.getCourseId()).get();
             course.setMentorEarned(course.getMentorEarned()+ (course.getCharges()/4));
             courseDetailsRepository.save(course);
-                change=1;
-//            user.setWithdrawCount(withdrawCount+1);
-//            user.setTotalCount(totalCount-1);
+            change=1;
             userService.updateMentorProgressAmount(mentorCourse);
         }
-        mentorCourse.setTotalCount(totalCount+change);
-        mentorCourse.setWithdrawCount(withdrawCount-change);
-//        progressRepo.save(user);
+        mentorCourse.setTotalCount(totalCount-change);
+        mentorCourse.setWithdrawCount(withdrawCount+change);
         return mentorCourse;
     }
 

@@ -104,11 +104,7 @@ public class MentorController {
 //        mentorService.updateProgress(mentorCourse);
 //    }
 
-    //	withdrawAmount
-    @RequestMapping(value = "/withdrawAmount",method = RequestMethod.PUT)
-    public MentorProgressModel withdrawMentorProgress(@RequestBody MentorProgressModel mentorCourse){
-        return mentorService.withdrawProgressAmount(mentorCourse);
-    }
+
 
 
 //    addSkill
@@ -191,5 +187,13 @@ public class MentorController {
     @RequestMapping(value = "/getMentorCourses/{mentorId}",method = RequestMethod.GET)
     public List<String> getMentorCourseId(@PathVariable(name = "mentorId") String mentorId){
         return mentorService.getMentorCourseId(Integer.parseInt(mentorId));
+    }
+
+//    Evalaluated Controlleres
+
+    //	withdrawAmount
+    @RequestMapping(value = "/withdrawAmount",method = RequestMethod.PUT)
+    public MentorProgressModel withdrawMentorProgress(@RequestBody MentorProgressModel mentorCourse){
+        return mentorService.withdrawProgressAmount(mentorCourse);
     }
 }

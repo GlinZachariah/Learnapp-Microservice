@@ -330,11 +330,11 @@ public class UserService {
 
     public int getTotalCount(String courseId, String username) {
         UserProgress userProgress =userProgressRepository.findCourse(username,courseId).orElse(null);
-        if(userProgress!= null) {
-            return userProgress.getTotalCount();
+        if(userProgress!= null) {lCount();
         }
         return  userCompletedRepository.findCourse(username,courseId).get().getTotalCount();
     }
+            return userProgress.getTota
 
 
     public int getWithdrawCount(String courseId, String username) {
@@ -347,15 +347,17 @@ public class UserService {
 
     public void updateMentorProgressAmount(MentorProgressModel mentorProgressModel) {
         UserProgress userProgress = userProgressRepository.findCourse(mentorProgressModel.getUsername(),mentorProgressModel.getCourseId()).orElse(null);
-        if(userProgress != null){
+        if(userProgress != null && userProgress.getWithdrawCount()<4){
             userProgress.setWithdrawCount(userProgress.getWithdrawCount()+1);
             userProgress.setTotalCount(userProgress.getTotalCount()-1);
             userProgressRepository.save(userProgress);
-        }else{
+        }else {
             UserCompleted userCompleted = userCompletedRepository.findCourse(mentorProgressModel.getUsername(),mentorProgressModel.getCourseId()).get();
-            userCompleted.setWithdrawCount(userCompleted.getWithdrawCount()+1);
-            userCompleted.setTotalCount(userProgress.getTotalCount()-1);
-            userCompletedRepository.save(userCompleted);
+            if(userCompleted.getWithdrawCount()<4){
+                userCompleted.setWithdrawCount(userCompleted.getWithdrawCount()+1);
+                userCompleted.setTotalCount(userProgress.getTotalCount()-1);
+                userCompletedRepository.save(userCompleted);
+            }
         }
     }
 }
