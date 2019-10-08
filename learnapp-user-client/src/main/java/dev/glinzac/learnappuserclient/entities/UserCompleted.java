@@ -23,6 +23,7 @@ public class UserCompleted {
     private int timeslot;
     private Date startDate;
     private Date endDate;
+    private int totalCount;
     private int withdrawCount;
 
     public String getCourseDetails() {
@@ -68,5 +69,11 @@ public class UserCompleted {
         this.withdrawCount = withdrawCount;
     }
 
+    public int getTotalCount() {
+        return totalCount;
+    }
 
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
+    }
 }

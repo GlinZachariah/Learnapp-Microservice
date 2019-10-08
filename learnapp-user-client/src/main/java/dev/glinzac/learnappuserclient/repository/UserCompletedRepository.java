@@ -16,4 +16,7 @@ public interface UserCompletedRepository extends CrudRepository<UserCompleted,In
 
     @Query(value="select * from user_completed where user_name= :username && course_id = :courseId",nativeQuery = true)
     Optional<UserCompleted> findCourse(@Param(value="username") String username, @Param(value="courseId") String courseId);
+
+    @Query(value="select * from user_completed",nativeQuery = true)
+    List<UserCompleted> findMentorInCompleted();
 }

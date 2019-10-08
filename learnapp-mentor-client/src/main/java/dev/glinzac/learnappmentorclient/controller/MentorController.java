@@ -92,17 +92,17 @@ public class MentorController {
     }
 
     //	InProgress
-    @RequestMapping(value = "/viewMentorProgress/{mentorUsername}",method = RequestMethod.GET)
-    public List<MentorProgressModel> viewMentorProgress(@PathVariable  String mentorUsername){
-        int mentorId = mentorService.findMentorId(mentorUsername);
-        return mentorService.viewProgress(mentorId);
-    }
+//    @RequestMapping(value = "/viewMentorProgress/{mentorUsername}",method = RequestMethod.GET)
+//    public List<MentorProgressModel> viewMentorProgress(@PathVariable  String mentorUsername){
+//        int mentorId = mentorService.findMentorId(mentorUsername);
+//        return mentorService.viewProgress(mentorId);
+//    }
 
     //	updateInProgress
-    @RequestMapping(value = "/updateMentorProgress",method = RequestMethod.PUT)
-    public void updateMentorProgress(@RequestBody MentorProgressModel mentorCourse){
-        mentorService.updateProgress(mentorCourse);
-    }
+//    @RequestMapping(value = "/updateMentorProgress",method = RequestMethod.PUT)
+//    public void updateMentorProgress(@RequestBody MentorProgressModel mentorCourse){
+//        mentorService.updateProgress(mentorCourse);
+//    }
 
     //	withdrawAmount
     @RequestMapping(value = "/withdrawAmount",method = RequestMethod.PUT)
@@ -187,4 +187,9 @@ public class MentorController {
         return mentorService.getMentorId(mentorUsername);
     }
 
+//    getMentorCourses
+    @RequestMapping(value = "/getMentorCourses/{mentorId}",method = RequestMethod.GET)
+    public List<String> getMentorCourseId(@PathVariable(name = "mentorId") String mentorId){
+        return mentorService.getMentorCourseId(Integer.parseInt(mentorId));
+    }
 }

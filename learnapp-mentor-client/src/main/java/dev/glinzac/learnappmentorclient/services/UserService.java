@@ -39,16 +39,16 @@ public class UserService {
         restTemplate.postForEntity(userServiceUrl()+"/signUpUser",userModel,UserModel.class);
     }
 
-    public List<MentorProgressModel> getMentorProgress(int mentorId) {
-        return  restTemplate.exchange(userServiceUrl() + "/getMentorCourseDetails"+mentorId,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<MentorProgressModel>>() { }).getBody();
-    }
-
-    public void updateProgress(MentorProgressModel mentorCourse) {
-        restTemplate.postForEntity(userServiceUrl()+"/updateMentorProgress",mentorCourse,MentorProgressModel.class);
-    }
+//    public List<MentorProgressModel> getMentorProgress(int mentorId) {
+//        return  restTemplate.exchange(userServiceUrl() + "/getMentorCourseDetails"+mentorId,
+//                HttpMethod.GET,
+//                null,
+//                new ParameterizedTypeReference<List<MentorProgressModel>>() { }).getBody();
+//    }
+//
+//    public void updateProgress(MentorProgressModel mentorCourse) {
+//        restTemplate.postForEntity(userServiceUrl()+"/updateMentorProgress",mentorCourse,MentorProgressModel.class);
+//    }
 
     public int getTotalCount(MentorProgressModel mentorCourse) {
         return restTemplate.getForObject(userServiceUrl()+"/getTotalCount/"+mentorCourse.getCourseId()+"/"+mentorCourse.getUsername(),Integer.class);

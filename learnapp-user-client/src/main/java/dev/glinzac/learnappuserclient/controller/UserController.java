@@ -60,6 +60,7 @@ public class UserController {
     //addProgressTrainingDetails | updateProgressTrainingDetails
     @RequestMapping(value="/updateProgressTraining",method = RequestMethod.PUT)
     public void updateProgressTrainingDetails(@RequestBody UserProgressTrainingModel data) {
+        System.out.println("The Update Progress Training is working Here");
         userService.updateProgressTraining(data);
     }
 
@@ -94,9 +95,34 @@ public class UserController {
      }
 
     //       getMentorCourseDetails
-    @RequestMapping(value = "/getMentorCourseDetails/{mentorid}",method = RequestMethod.GET)
-    public List<MentorProgressModel> getMentorCourseDetails(@PathVariable(value = "mentorid") String mentorId){
-        return  userService.getMentorCourseDetails(Integer.parseInt(mentorId));
+    @RequestMapping(value = "/getMentorCourseDetails/{mentorUsername}",method = RequestMethod.GET)
+    public List<MentorProgressModel> getMentorCourseDetails(@PathVariable(value = "mentorUsername") String mentorUsername){
+        Integer mentorId = userService.getMentorId(mentorUsername);
+        return  userService.getMentorCourseDetails(mentorId);
+    }
+
+//    updateMentorCourseDetails
+    @RequestMapping(value = "/updateMentorCourseDetails",method = RequestMethod.PUT)
+    public void updateMentorCourseDetails(@RequestBody MentorProgressModel mentorData){
+        userService.updateMentorCourseDetails(mentorData);
+    }
+
+//    getTotalCount
+    @RequestMapping(value = "/getTotalCount/{courseId}/{username}",method = RequestMethod.GET)
+    public int getTotalCount(@PathVariable String courseId,@PathVariable String username){
+        return userService.getTotalCount(courseId,username);
+    }
+
+//    getWithdrawCount
+    @RequestMapping(value = "/getWithdrawCount/{courseId}/{username}",method = RequestMethod.GET)
+    public int getWithdrawCount(@PathVariable String courseId,@PathVariable String username){
+        return userService.getWithdrawCount(courseId,username);
+    }
+
+//    updateMentorProgressAmount
+    @RequestMapping(value = "/updateMentorProgressAmount",method = RequestMethod.POST)
+    public void updateMentorProgressAmount(@RequestBody MentorProgressModel mentorProgressModel){
+        userService.updateMentorProgressAmount(mentorProgressModel);
     }
 
 }

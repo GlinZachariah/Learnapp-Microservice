@@ -5,8 +5,12 @@ import com.netflix.discovery.EurekaClient;
 import dev.glinzac.learnappuserclient.models.CourseModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 @Service
 public class MentorService {
@@ -50,5 +54,12 @@ public class MentorService {
 
     public int getMentorId(String trainerName) {
         return restTemplate.getForObject(mentorServiceUrl()+"getMentorId/"+trainerName,Integer.class);
+    }
+
+    public List<String> getMentorCourses(int mentorId) {
+        return restTemplate.exchange(mentorServiceUrl() + "/getMentorCourses/"+mentorId,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<String>>() { }).getBody();
     }
 }

@@ -139,19 +139,25 @@ public class UserService {
     }
 
     public void updateProgressTraining(UserProgressTrainingModel data) {
+        System.out.println("The code worked till here 1");
         int count = userProgressRepository.findProgressCourse(data.getUserName(),data.getCourseId()).orElse(0);
         UserProgress newData;
+        System.out.println("The code worked till here 2");
         if( count != 0) {
             newData = userProgressRepository.findCourse(data.getUserName(), data.getCourseId()).get();
+            System.out.println("The code worked till here 2-1");
         }else {
             newData = new UserProgress();
             newData.setTotalCount(0);
             mentorService.increaseTraineeCount(data.getCourseId());
+            System.out.println("The code worked till here 2-2");
         }
+        System.out.println("The code worked till here 3");
         newData.setCourseDetails(data.getCourseId());
         newData.setCourseStatus(data.getCourseStatus());
         newData.setPaymentStatus(data.getPaymentStatus());
         if(data.getCourseStatus().equals("On Going")) {
+            System.out.println("The code worked till here 4");
             int progress = data.getProgress();
             int initCount=0;
             if(progress <= 25) {
@@ -166,6 +172,7 @@ public class UserService {
             newData.setTotalCount(initCount-newData.getWithdrawCount());
         }
         if(data.getPaymentStatus().equals("Paid") && data.getCourseStatus().equals("Approved")) {
+            System.out.println("The code worked till here 5");
             newData.setCourseStatus("On Going");
             mentorService.increaseTraineeProgressCount(data.getCourseId());
 
@@ -183,15 +190,17 @@ public class UserService {
             payment.setUserDetails(userDetailsRepository.findById(data.getUserName()).get());
             paymentLogRepository.save(payment);
         }
-
+        System.out.println("The code worked till here 6");
         newData.setProgress(data.getProgress());
         newData.setRating(data.getRating());
         newData.setStartDate(data.getStartDate());
         newData.setTimeslot(data.getTimeSlot());
         newData.setUserDetails(userDetailsRepository.findById(data.getUserName()).get());
         if(newData.getProgress() == 100.0D) {
+            System.out.println("The code worked till here 7");
             userProgressRepository.deleteById(newData.getProgressId());
         }else {
+            System.out.println("The code worked till here 8");
             userProgressRepository.save(newData);
         }
     }
@@ -273,38 +282,80 @@ public class UserService {
     }
 
     public List<MentorProgressModel> getMentorCourseDetails(int mentorId) {
-//        List<UserProgress> courses = userProgressRepository.findTrainerCourses(mentorId);
-//        List<MentorProgressModel> result = new ArrayList<MentorProgressModel>();
-//        courses.forEach(course->{
-//            MentorProgressModel item = new MentorProgressModel();
-//            item.setCourseId(course.getCourseDetails());
-//            item.setCourseStatus(course.getCourseStatus());
-//            item.setTimestamp(course.getStartDate());
-//            item.setProgress(course.getProgress());
-//            item.setTimeSlot(course.getTimeslot());
-//            item.setUsername(course.getUserDetails().getUserName());
-//            item.setWithdrawCount(course.getWithdrawCount());
-//            item.setTotalCount(course.getTotalCount());
-//            item.setPaymentStatus(course.getPaymentStatus());
-//            if(item.getCourseStatus().equals("Rejected")) {
-//                System.out.println("Rejected Item");
-//            }else {
-//                result.add(item);
-//            }
-//        });
-//        List<UserCompleted> completedCourses = userCompletedRepository.findTrainerCourses(mentorId);
-//        completedCourses.forEach(course->{
-//            MentorProgressModel item = new MentorProgressModel();
-//            item.setCourseId(course.getCourseDetails());
-//            item.setCourseStatus("Completed");
-//            item.setTimestamp(course.getStartDate());
-//            item.setProgress(100);
-//            item.setTimeSlot(course.getTimeslot());
-//            item.setUsername(course.getUserDetails().getUserName());
-//            item.setWithdrawCount(course.getWithdrawCount());
-//            result.add(item);
-//        });
-//        return result;
-        return  null;
+         List<String> mentorCousesList  = mentorService.getMentorCourses(mentorId);
+         List<MentorProgressModel> result = userProgressRepository.findMentorInProgress()
+                 .stream()
+                 .filter(course->mentorCousesList.contains(course.getCourseDetails()) && !course.getCourseStatus().equals("Rejected"))
+                 .map(course->new MentorProgressModel(
+                         course.getStartDate(),
+                         course.getUserDetails().getUserName(),
+                         course.getCourseDetails(),
+                         course.getCourseStatus(),
+                         course.getPaymentStatus(),
+                         course.getTimeslot(),
+                         course.getProgress(),
+                         course.getWithdrawCount(),
+                         course.getTotalCount()
+                 ))
+                 .collect(Collectors.toList());
+         result.addAll(
+           userCompletedRepository.findMentorInCompleted()
+           .stream()
+           .filter(course->mentorCousesList.contains(course.getCourseDetails()))
+           .map( course-> new MentorProgressModel(
+                   course.getStartDate(),
+                   course.getUserDetails().getUserName(),
+                   course.getCourseDetails(),
+                   "Completed",
+                   "Paid",
+                   course.getTimeslot(),
+                   100,
+                   course.getWithdrawCount(),
+                   course.getTotalCount()
+           ))
+           .collect(Collectors.toList())
+         );
+        return  result;
+    }
+
+    public Integer getMentorId(String mentorUsername) {
+        return mentorService.getMentorId(mentorUsername);
+    }
+
+    public void updateMentorCourseDetails(MentorProgressModel mentorData) {
+        UserProgress userProgress = userProgressRepository.findCourse(mentorData.getUsername(),mentorData.getCourseId()).get();
+        userProgress.setCourseStatus(mentorData.getCourseStatus());
+        userProgressRepository.save(userProgress);
+    }
+
+    public int getTotalCount(String courseId, String username) {
+        UserProgress userProgress =userProgressRepository.findCourse(username,courseId).orElse(null);
+        if(userProgress!= null) {
+            return userProgress.getTotalCount();
+        }
+        return  userCompletedRepository.findCourse(username,courseId).get().getTotalCount();
+    }
+
+
+    public int getWithdrawCount(String courseId, String username) {
+        UserProgress userProgress =userProgressRepository.findCourse(username,courseId).orElse(null);
+        if(userProgress!= null) {
+            return userProgress.getWithdrawCount();
+        }
+        return  userCompletedRepository.findCourse(username,courseId).get().getWithdrawCount();
+    }
+
+    public void updateMentorProgressAmount(MentorProgressModel mentorProgressModel) {
+        UserProgress userProgress = userProgressRepository.findCourse(mentorProgressModel.getUsername(),mentorProgressModel.getCourseId()).orElse(null);
+        if(userProgress != null){
+            userProgress.setWithdrawCount(userProgress.getWithdrawCount()+1);
+            userProgress.setTotalCount(userProgress.getTotalCount()-1);
+            userProgressRepository.save(userProgress);
+        }else{
+            UserCompleted userCompleted = userCompletedRepository.findCourse(mentorProgressModel.getUsername(),mentorProgressModel.getCourseId()).get();
+            userCompleted.setWithdrawCount(userCompleted.getWithdrawCount()+1);
+            userCompleted.setTotalCount(userProgress.getTotalCount()-1);
+            userCompletedRepository.save(userCompleted);
+        }
     }
 }

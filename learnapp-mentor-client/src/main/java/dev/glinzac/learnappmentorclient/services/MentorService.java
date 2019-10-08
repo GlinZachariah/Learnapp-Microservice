@@ -217,13 +217,13 @@ public class MentorService {
         return result;
     }
 
-    public List<MentorProgressModel> viewProgress(int mentorId) {
-        return userService.getMentorProgress(mentorId);
-    }
-
-    public void updateProgress(MentorProgressModel mentorCourse) {
-       userService.updateProgress(mentorCourse);
-    }
+//    public List<MentorProgressModel> viewProgress(int mentorId) {
+//        return userService.getMentorProgress(mentorId);
+//    }
+//
+//    public void updateProgress(MentorProgressModel mentorCourse) {
+//       userService.updateProgress(mentorCourse);
+//    }
 
     public MentorProgressModel withdrawProgressAmount(MentorProgressModel mentorCourse) {
 //        UserProgress user = progressRepo.findCourse(mentorCourse.getUsername(), mentorCourse.getCourseId()).get();
@@ -372,5 +372,12 @@ public class MentorService {
 
     public int getMentorId(String mentorUsername) {
         return mentorDetailsRepository.findMentorId(mentorUsername).get();
+    }
+
+    public List<String> getMentorCourseId(int mentorId) {
+       return courseDetailsRepository.findByMentorId(mentorId)
+               .stream()
+               .map(course->course.getCourseId())
+               .collect(Collectors.toList());
     }
 }
