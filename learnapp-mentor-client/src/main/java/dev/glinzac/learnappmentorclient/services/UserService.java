@@ -68,4 +68,8 @@ public class UserService {
                 null,
                 new ParameterizedTypeReference<List<PaymentModel>>() { }).getBody();
     }
+
+    public String getUserFullName(String username){
+        return restTemplate.getForEntity( userServiceUrl()+"/getUserFullName/"+username,String.class).getBody();
+    }
 }

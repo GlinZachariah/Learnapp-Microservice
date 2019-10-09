@@ -196,4 +196,16 @@ public class MentorController {
     public MentorProgressModel withdrawMentorProgress(@RequestBody MentorProgressModel mentorCourse){
         return mentorService.withdrawProgressAmount(mentorCourse);
     }
+
+//    updateCourseRating
+    @RequestMapping(value = "/updateCourseRating/{courseid}/{rating}",method = RequestMethod.GET)
+    public void updateCourseRating(@PathVariable String courseid,@PathVariable String rating){
+        mentorService.updateCourseRating(courseid,Integer.parseInt(rating));
+    }
+
+//    updateMentorSkill
+    @RequestMapping(value = "/updateMentorSkill/{mentorusername}",method = RequestMethod.POST)
+    public void updateMentorSkill(@PathVariable String mentorusername,@RequestBody Skills[] skills){
+        mentorService.updateMentorSkill(mentorusername,skills);
+    }
 }

@@ -114,6 +114,7 @@ public class UserService {
         user.setStartDate(userData.getStartDate());
         user.setTimeslot(userData.getTimeSlot());
         userCompletedRepository.save(user);
+        mentorService.updateRating(userData.getCourseId(),userData.getRating());
     }
 
     public List<UserProgressTrainingModel> getCurrentTraining(String username) {
@@ -366,5 +367,9 @@ public class UserService {
         UserDetails user= userDetailsRepository.findById(loggedUser).get();
         user.setUserPassword(newPwd);
         userDetailsRepository.save(user);
+    }
+
+    public String getUserFullName(String username) {
+        return userDetailsRepository.findById(username).get().getFullName();
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -311,7 +312,7 @@ public class MentorService {
                         newDataItem.setTrainingCharges(course.getCharges());
                         newDataItem.setTechnology(requestData.getTechnology());
                         newDataItem.setTotalTime(course.getTotalTime());
-                        newDataItem.setTrainerName(course.getMentorDetails().getUserDetails());
+                        newDataItem.setTrainerName(userService.getUserFullName(course.getMentorDetails().getUserDetails()));
                         newDataItem.setTotalCount(course.getTotalTraineeCount());
                         newDataItem.setActiveCount(course.getTraineeInProgress());
                         newDataItem.setCompletedCount(course.getTraineeCompleted());
@@ -368,5 +369,19 @@ public class MentorService {
                .stream()
                .map(course->course.getCourseId())
                .collect(Collectors.toList());
+    }
+
+    public void updateCourseRating(String courseid, int newRating) {
+        CourseDetails courseDetails = courseDetailsRepository.findById(courseid).get();
+        int oldAve = courseDetails.getAverageRating();
+        int oldNumPoints = courseDetails.getTotalTraineeCount();
+        courseDetails.setAverageRating(((oldAve*oldNumPoints) + newRating)/(oldNumPoints+1));
+    }
+
+    public void updateMentorSkill(String mentorusername, Skills[] skills) {
+        Integer mentorId = mentorDetailsRepository.findMentorId(mentorusername).get();
+        MentorDetails mentorDetails =mentorDetailsRepository.findById(mentorId).get();
+        mentorDetails.setSkills(Arrays.asList(skills));
+        mentorDetailsRepository.save(mentorDetails);
     }
 }

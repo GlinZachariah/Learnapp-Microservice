@@ -62,4 +62,8 @@ public class MentorService {
                 null,
                 new ParameterizedTypeReference<List<String>>() { }).getBody();
     }
+
+    public void updateRating(String courseId, int rating) {
+        restTemplate.getForObject(mentorServiceUrl()+"/updateCourseRating/"+courseId+"/"+rating,String.class);
+    }
 }

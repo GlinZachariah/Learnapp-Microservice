@@ -131,4 +131,9 @@ public class UserController {
             userService.setNewPwd(loggedUser,newPwd);
         }
 
+//        getUserFullName
+    @RequestMapping(value="/getUserFullName/{username}",method = RequestMethod.GET)
+    public String getUserFullName(@PathVariable String username){
+        return userService.getUserFullName(username);
+    }
 }
