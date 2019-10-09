@@ -378,10 +378,10 @@ public class MentorService {
         courseDetails.setAverageRating(((oldAve*oldNumPoints) + newRating)/(oldNumPoints+1));
     }
 
-    public void updateMentorSkill(String mentorusername, Skills[] skills) {
+    public void updateMentorSkill(String mentorusername, List<Skills> skills) {
         Integer mentorId = mentorDetailsRepository.findMentorId(mentorusername).get();
         MentorDetails mentorDetails =mentorDetailsRepository.findById(mentorId).get();
-        mentorDetails.setSkills(Arrays.asList(skills));
+        mentorDetails.setSkills(skills);
         mentorDetailsRepository.save(mentorDetails);
     }
 }

@@ -205,7 +205,7 @@ public class MentorController {
 
 //    updateMentorSkill
     @RequestMapping(value = "/updateMentorSkill/{mentorusername}",method = RequestMethod.POST)
-    public void updateMentorSkill(@PathVariable String mentorusername,@RequestBody Skills[] skills){
+    public void updateMentorSkill(@PathVariable String mentorusername,@RequestBody List<Skills> skills){
         mentorService.updateMentorSkill(mentorusername,skills);
     }
 }
