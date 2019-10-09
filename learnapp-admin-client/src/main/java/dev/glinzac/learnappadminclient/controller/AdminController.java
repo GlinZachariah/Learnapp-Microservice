@@ -2,6 +2,8 @@ package dev.glinzac.learnappadminclient.controller;
 
 import dev.glinzac.learnappadminclient.entities.AdminEntity;
 import dev.glinzac.learnappadminclient.entities.Technology;
+import dev.glinzac.learnappadminclient.models.AuthModel;
+import dev.glinzac.learnappadminclient.models.CredentialModel;
 import dev.glinzac.learnappadminclient.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,5 +34,13 @@ public class AdminController {
     public void deleteTech(@PathVariable(name = "technology") String technology){
         adminService.deleteTechnology(technology);
     }
+
+    //	*performAuthentication
+    @RequestMapping(value="/performAuth",method= RequestMethod.POST)
+    public AuthModel performAuth(@RequestBody CredentialModel credentialModel) {
+        return adminService.performAuth(credentialModel);
+    }
+
+
 
 }

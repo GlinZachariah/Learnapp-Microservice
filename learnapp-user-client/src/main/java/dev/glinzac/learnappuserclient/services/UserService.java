@@ -139,25 +139,25 @@ public class UserService {
     }
 
     public void updateProgressTraining(UserProgressTrainingModel data) {
-        System.out.println("The code worked till here 1");
+
         int count = userProgressRepository.findProgressCourse(data.getUserName(),data.getCourseId()).orElse(0);
         UserProgress newData;
-        System.out.println("The code worked till here 2");
+
         if( count != 0) {
             newData = userProgressRepository.findCourse(data.getUserName(), data.getCourseId()).get();
-            System.out.println("The code worked till here 2-1");
+
         }else {
             newData = new UserProgress();
             newData.setTotalCount(0);
             mentorService.increaseTraineeCount(data.getCourseId());
-            System.out.println("The code worked till here 2-2");
+
         }
-        System.out.println("The code worked till here 3");
+
         newData.setCourseDetails(data.getCourseId());
         newData.setCourseStatus(data.getCourseStatus());
         newData.setPaymentStatus(data.getPaymentStatus());
         if(data.getCourseStatus().equals("On Going")) {
-            System.out.println("The code worked till here 4");
+
             int progress = data.getProgress();
             int initCount=0;
             if(progress <= 25) {
@@ -172,7 +172,7 @@ public class UserService {
             newData.setTotalCount(initCount-newData.getWithdrawCount());
         }
         if(data.getPaymentStatus().equals("Paid") && data.getCourseStatus().equals("Approved")) {
-            System.out.println("The code worked till here 5");
+
             newData.setCourseStatus("On Going");
             mentorService.increaseTraineeProgressCount(data.getCourseId());
 
@@ -190,17 +190,17 @@ public class UserService {
             payment.setUserDetails(userDetailsRepository.findById(data.getUserName()).get());
             paymentLogRepository.save(payment);
         }
-        System.out.println("The code worked till here 6");
+
         newData.setProgress(data.getProgress());
         newData.setRating(data.getRating());
         newData.setStartDate(data.getStartDate());
         newData.setTimeslot(data.getTimeSlot());
         newData.setUserDetails(userDetailsRepository.findById(data.getUserName()).get());
         if(newData.getProgress() == 100.0D) {
-            System.out.println("The code worked till here 7");
+
             userProgressRepository.deleteById(newData.getProgressId());
         }else {
-            System.out.println("The code worked till here 8");
+
             userProgressRepository.save(newData);
         }
     }
@@ -330,11 +330,12 @@ public class UserService {
 
     public int getTotalCount(String courseId, String username) {
         UserProgress userProgress =userProgressRepository.findCourse(username,courseId).orElse(null);
-        if(userProgress!= null) {lCount();
+        if(userProgress!= null) {
+            return userProgress.getTotalCount();
         }
         return  userCompletedRepository.findCourse(username,courseId).get().getTotalCount();
     }
-            return userProgress.getTota
+
 
 
     public int getWithdrawCount(String courseId, String username) {
@@ -359,5 +360,11 @@ public class UserService {
                 userCompletedRepository.save(userCompleted);
             }
         }
+    }
+
+    public void setNewPwd(String loggedUser,String newPwd) {
+        UserDetails user= userDetailsRepository.findById(loggedUser).get();
+        user.setUserPassword(newPwd);
+        userDetailsRepository.save(user);
     }
 }

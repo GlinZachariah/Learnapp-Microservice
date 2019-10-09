@@ -125,4 +125,10 @@ public class UserController {
         userService.updateMentorProgressAmount(mentorProgressModel);
     }
 
+//    changePassword  newValue
+        @RequestMapping(value = "/newValue/{loggedUser}",method = RequestMethod.POST)
+        public void setNewPwd(@PathVariable String loggedUser,@RequestBody String newPwd){
+            userService.setNewPwd(loggedUser,newPwd);
+        }
+
 }
