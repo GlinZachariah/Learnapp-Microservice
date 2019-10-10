@@ -16,15 +16,10 @@ import java.util.List;
 public class MentorService {
 
     @Autowired
-    @Qualifier(value = "eurekaClient")
-    private EurekaClient discoveryClient;
-
-    @Autowired
     private RestTemplate restTemplate;
 
     public String mentorServiceUrl() {
-        InstanceInfo instance = discoveryClient.getNextServerFromEureka("MENTOR", false);
-        return instance.getHomePageUrl();
+        return "http://mentor/";
     }
 
     public CourseModel getCourseDetails(String courseId){

@@ -16,15 +16,10 @@ import java.util.List;
 public class UserService {
 
     @Autowired
-    @Qualifier(value = "eurekaClient")
-    private EurekaClient discoveryClient;
-
-    @Autowired
     private RestTemplate restTemplate;
 
     public String userServiceUrl() {
-        InstanceInfo instance = discoveryClient.getNextServerFromEureka("USERS", false);
-        return instance.getHomePageUrl();
+        return "http://users/";
     }
 
     public void saveUserDetails(UserModel user) {
